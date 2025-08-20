@@ -6,12 +6,20 @@ import kaggle
 import os
 
 
-# Download similarity.pkl from Kaggle (if not exists)
-# -------------------------------
+# Setup Kaggle API credentials from Streamlit secrets
+os.environ["KAGGLE_USERNAME"] = st.secrets["KAGGLE_USERNAME"]
+os.environ["KAGGLE_KEY"] = st.secrets["KAGGLE_KEY"]
+
 KAGGLE_DATASET = "dipseek/movie-recommendation-system-similarity-pickle-file"
 
+# Download similarity.pkl if not exists
 if not os.path.exists("similarity.pkl"):
-    os.system(f"kaggle datasets download -d {KAGGLE_DATASET} --unzip")
+    subprocess.run([
+        "kaggle", "datasets", "download",
+        "-d", KAGGLE_DATASET,
+        "-p", "./",
+        "--unzip"
+    ])
 
 
 def fetch_poster(movie_id):
@@ -39,7 +47,7 @@ def recommend(movie):
 movies = pickle.load(open('movies.pkl','rb'))
 movies_list = movies['title'].values
 
-# similarity = pickle.load(open('similarity.pkl','rb'))
+similarity = pickle.load(open('similarity.pkl','rb'))
 
 st.title("Movie Recommender System")
 
