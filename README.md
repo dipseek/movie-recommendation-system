@@ -3,7 +3,7 @@
 An interactive **Movie Recommendation System** built with **Streamlit**, **Pandas**, and **Scikit-learn**.  
 It suggests movies similar to the one selected by the user.  
 
-🚀 Live Demo: [Click Here](https://your-app-link.streamlit.app)  
+🚀 Live Demo: [Click Here](https://movie-recommendation-system-dipseek.streamlit.app)  
 
 ---
 
@@ -25,4 +25,5 @@ It suggests movies similar to the one selected by the user.
 ---
 
 ## 📂 Project Structure  
+
 
