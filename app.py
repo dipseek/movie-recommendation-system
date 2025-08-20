@@ -2,7 +2,6 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
-import kaggle
 import os
 import subprocess
 
@@ -78,5 +77,6 @@ if st.button('Recommend'):
         st.image(posters[4])
 
     
+
 
 
