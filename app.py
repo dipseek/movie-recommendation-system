@@ -4,6 +4,7 @@ import pandas as pd
 import requests
 import kaggle
 import os
+import subprocess
 
 
 # Setup Kaggle API credentials from Streamlit secrets
@@ -77,4 +78,5 @@ if st.button('Recommend'):
         st.image(posters[4])
 
     
+
 
