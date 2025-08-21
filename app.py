@@ -3,23 +3,18 @@ import pickle
 import pandas as pd
 import requests
 import os
-import subprocess
-
-
-# Setup Kaggle API credentials from Streamlit secrets
-os.environ["KAGGLE_USERNAME"] = st.secrets["KAGGLE_USERNAME"]
-os.environ["KAGGLE_KEY"] = st.secrets["KAGGLE_KEY"]
+from kaggle.api.kaggle_api_extended import KaggleApi
 
 KAGGLE_DATASET = "dipseek/movie-recommendation-system-similarity-pickle-file"
 
-# Download similarity.pkl if not exists
+# Download similarity.pkl only if missing
 if not os.path.exists("similarity.pkl"):
-    subprocess.run([
-        "kaggle", "datasets", "download",
-        "-d", KAGGLE_DATASET,
-        "-p", "./",
-        "--unzip"
-    ])
+    api = KaggleApi()
+    api.authenticate()
+    api.dataset_download_files(KAGGLE_DATASET, path="./", unzip=True)
+
+
+
 
 
 def fetch_poster(movie_id):
