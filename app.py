@@ -7,15 +7,26 @@ import os
 
 
 # Google Drive file ID
-FILE_ID = "1sDtlacVGAtRXyOUuEDbJl_7xyZy_RJrT"  
+FILE_ID = "1sDtlacVGAtRXyOUuEDbJl_7xyZy_RJrT"
 URL = f"https://drive.google.com/uc?export=download&id={FILE_ID}"
 OUTPUT = "similarity.pkl"
 
 # Download only if not exists
 if not os.path.exists(OUTPUT):
     r = requests.get(URL)
-    with open(OUTPUT, "wb") as f:
-        f.write(r.content)
+    if r.status_code == 200:
+        with open(OUTPUT, "wb") as f:
+            f.write(r.content)
+    else:
+        st.error("❌ Failed to download similarity.pkl from Google Drive. Check file permissions.")
+        st.stop()
+
+# Load files safely
+movies = pickle.load(open('movies.pkl', 'rb'))
+movies_list = movies['title'].values
+
+with open('similarity.pkl', 'rb') as f:
+    similarity = pickle.load(f)
 
 
 
@@ -41,10 +52,10 @@ def recommend(movie):
     return recommended_movies, recommended_movies_posters
 
 
-movies = pickle.load(open('movies.pkl','rb'))
-movies_list = movies['title'].values
+# movies = pickle.load(open('movies.pkl','rb'))
+# movies_list = movies['title'].values
 
-similarity = pickle.load(open('similarity.pkl','rb'))
+# similarity = pickle.load(open('similarity.pkl','rb'))
 
 st.title("Movie Recommender System")
 
