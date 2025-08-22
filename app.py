@@ -4,15 +4,30 @@ import pandas as pd
 import requests
 import os
 
+import boto3
+from botocore.exceptions import ClientError
 
-import gdown
+BUCKET = "mrs-assets-dipseek"      # <-- your bucket
+KEY    = "artifacts/similarity.pkl"  # <-- your object key
+LOCAL  = "similarity.pkl"
 
-FILE_ID = "1sDtlacVGAtRXyOUuEDbJl_7xyZy_RJrT"
-OUTPUT = "similarity.pkl"
+def ensure_similarity_local():
+    if os.path.exists(LOCAL) and os.path.getsize(LOCAL) > 0:
+        return
+    s3 = boto3.client("s3")  # IAM role gives creds automatically
+    try:
+        with st.spinner("Downloading similarity.pkl from S3..."):
+            s3.download_file(BUCKET, KEY, LOCAL)
+    except ClientError as e:
+        st.error("Could not download similarity.pkl from S3. Check IAM role, bucket, and key.")
+        st.stop()
 
-if not os.path.exists(OUTPUT):
-    url = f"https://drive.google.com/uc?id={FILE_ID}"
-    gdown.download(url, OUTPUT, quiet=False)
+# call BEFORE loading the pickle
+ensure_similarity_local()
+
+# now safely load it
+with open(LOCAL, "rb") as f:
+    similarity = pickle.load(f)
 
 
 
@@ -20,8 +35,7 @@ if not os.path.exists(OUTPUT):
 movies = pickle.load(open('movies.pkl', 'rb'))
 movies_list = movies['title'].values
 
-with open('similarity.pkl', 'rb') as f:
-    similarity = pickle.load(f)
+
 
 
 

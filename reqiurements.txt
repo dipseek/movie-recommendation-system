@@ -3,5 +3,4 @@ pandas==2.1.3
 numpy
 scikit-learn==1.3.2
 requests
-kaggle
-gdown==4.7.1
+boto3
