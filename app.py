@@ -3,17 +3,19 @@ import pickle
 import pandas as pd
 import requests
 import os
-from kaggle.api.kaggle_api_extended import KaggleApi
-
-KAGGLE_DATASET = "dipseek/movie-recommendation-system-similarity-pickle-file"
-
-# Download similarity.pkl only if missing
-if not os.path.exists("similarity.pkl"):
-    api = KaggleApi()
-    api.authenticate()
-    api.dataset_download_files(KAGGLE_DATASET, path="./", unzip=True)
 
 
+
+# Google Drive file ID
+FILE_ID = "1sDtlacVGAtRXyOUuEDbJl_7xyZy_RJrT"  
+URL = f"https://drive.google.com/uc?export=download&id={FILE_ID}"
+OUTPUT = "similarity.pkl"
+
+# Download only if not exists
+if not os.path.exists(OUTPUT):
+    r = requests.get(URL)
+    with open(OUTPUT, "wb") as f:
+        f.write(r.content)
 
 
 
