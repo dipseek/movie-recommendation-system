@@ -5,21 +5,16 @@ import requests
 import os
 
 
+import gdown
 
-# Google Drive file ID
 FILE_ID = "1sDtlacVGAtRXyOUuEDbJl_7xyZy_RJrT"
-URL = f"https://drive.google.com/uc?export=download&id={FILE_ID}"
 OUTPUT = "similarity.pkl"
 
-# Download only if not exists
 if not os.path.exists(OUTPUT):
-    r = requests.get(URL)
-    if r.status_code == 200:
-        with open(OUTPUT, "wb") as f:
-            f.write(r.content)
-    else:
-        st.error("❌ Failed to download similarity.pkl from Google Drive. Check file permissions.")
-        st.stop()
+    url = f"https://drive.google.com/uc?id={FILE_ID}"
+    gdown.download(url, OUTPUT, quiet=False)
+
+
 
 # Load files safely
 movies = pickle.load(open('movies.pkl', 'rb'))
